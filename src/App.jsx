@@ -5,12 +5,14 @@ import foods from './foods.json';
 import FoodBox from './components/FoodBox';
 import FoodForm from './components/FoodForm';
 import Search from './components/Search';
+import TodayFood from './components/TodayFood';
 
 class App extends Component {
   state = {
     createForm: false,
     foods,
-    filteredFoods: foods
+    filteredFoods: foods,
+    todayFoods: []
   };
 
   showForm = () => {
@@ -35,7 +37,15 @@ class App extends Component {
   }
 
   addFood = (food) => {
-    console.log(food)
+    const clone = JSON.parse(JSON.stringify(this.state.todayFoods))
+    const find = this.state.todayFoods.findIndex((v) => v.name === food.name)
+    if (find !== -1)
+      clone[find].quantity += food.quantity
+    else
+      clone.push(food);
+    this.setState({
+      todayFoods: clone
+    })
   };
 
 
@@ -51,6 +61,7 @@ class App extends Component {
       {this.state.filteredFoods.map((v) => (
         <FoodBox key={v.name} clickHandler={this.addFood} {...v}/>
       ))}
+      <TodayFood foods={this.state.todayFoods}/>
     </div>
     )
   }

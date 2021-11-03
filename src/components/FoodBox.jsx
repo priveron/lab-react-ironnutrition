@@ -10,7 +10,7 @@ export default class FoodBox extends Component {
 
   changeHandler = (evt) => {
     this.setState({
-      [evt.target.id]: evt.target.value,
+      [evt.target.id]: Number(evt.target.value),
     });
   };
 
